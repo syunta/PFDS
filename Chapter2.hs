@@ -71,3 +71,15 @@ insert x s = iter s id
       | x < y  = iter a (\t -> f $ T t y b)
       | x > y  = iter b (\t -> f $ T a y t)
       | x == y = s
+
+-- 2.4
+insert' :: (Ord a) => a -> UnbalancedSet a -> UnbalancedSet a
+insert' x E = T E x E
+insert' x s@(T _ y' _) = iter y' s id
+  where
+    iter l E f
+      | x == l    = s
+      | otherwise = f $ T E x E
+    iter l (T a y b) f
+      | x < y     = iter y a (\t -> f $ T t y b)
+      | otherwise = iter l b (\t -> f $ T a y t)
