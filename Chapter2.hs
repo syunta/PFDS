@@ -2,7 +2,7 @@ module Chapter1 where
 
 suffixes :: [a] -> [[a]]
 suffixes [] = [[]]
-suffixes xs = xs : (suffixes . tail) xs
+suffixes xs@(_:xs') = xs : suffixes xs'
 
 {-
 
