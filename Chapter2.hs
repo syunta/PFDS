@@ -1,5 +1,7 @@
 module Chapter1 where
 
+-- 2.1
+
 suffixes :: [a] -> [[a]]
 suffixes [] = [[]]
 suffixes xs@(_:xs') = xs : suffixes xs'
@@ -41,3 +43,19 @@ suffixes' (x:xs) = (x:xs) : suffixes' xs
 (*,*) -> (*,*) -> (*,*) -> (*,*) -> ()
 
 -}
+
+data UnbalancedSet a = E | T (UnbalancedSet a) a (UnbalancedSet a)
+                       deriving (Show, Eq)
+
+empty :: (Ord a) => UnbalancedSet a
+empty = E
+
+-- 2.2
+member :: (Ord a) => a -> UnbalancedSet a -> Bool
+member _  E            = False
+member x' t@(T _ y' _) = iter x' y' t
+  where
+    iter x l E         = x == l
+    iter x l (T a y b) =
+      if x < y then iter x l a
+      else iter x y b
