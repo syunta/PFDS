@@ -1,4 +1,4 @@
-module Chapter1 where
+module Chapter2 where
 
 -- 2.1
 
@@ -53,9 +53,9 @@ empty = E
 -- 2.2
 member :: (Ord a) => a -> UnbalancedSet a -> Bool
 member _  E            = False
-member x' t@(T _ y' _) = iter x' y' t
+member x t@(T _ y' _) = iter y' t
   where
-    iter x l E         = x == l
-    iter x l (T a y b) =
-      if x < y then iter x l a
-      else iter x y b
+    iter l E = x == l
+    iter l (T a y b)
+      | x < y     = iter l a
+      | otherwise = iter y b
