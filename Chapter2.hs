@@ -59,3 +59,14 @@ member x t@(T _ y' _) = iter y' t
     iter l (T a y b)
       | x < y     = iter l a
       | otherwise = iter y b
+
+-- 2.3
+insert :: (Ord a) => a -> UnbalancedSet a -> UnbalancedSet a
+insert x E = T E x E
+insert x s = iter s id
+  where
+    iter E f = f $ T E x E
+    iter (T a y b) f
+      | x < y  = iter a (\t -> f $ T t y b)
+      | x > y  = iter b (\t -> f $ T a y t)
+      | x == y = s
