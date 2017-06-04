@@ -51,6 +51,7 @@ empty :: (Ord a) => UnbalancedSet a
 empty = E
 
 -- 2.2
+-- member の結果が False になる場合は d + 1 となるが, True になる場合でも d + 1 なのでケースバイケースと思われる.
 member :: (Ord a) => a -> UnbalancedSet a -> Bool
 member _  E            = False
 member x t@(T _ y' _) = iter y' t
