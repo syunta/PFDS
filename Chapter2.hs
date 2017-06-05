@@ -83,3 +83,11 @@ insert' x s@(T _ y' _) = iter y' s id
     iter l (T a y b) f
       | x < y     = iter y a (\t -> f $ T t y b)
       | otherwise = iter l b (\t -> f $ T a y t)
+
+-- 2.5
+-- (a)
+
+complete :: (Ord a) => a -> Int -> UnbalancedSet a
+complete _ 0 = E
+complete x n = T t x t
+  where t = complete x (n-1)

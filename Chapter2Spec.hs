@@ -27,3 +27,6 @@ main = hspec $ do
       insert' 14 t1 `shouldBe` T (T E 14 E) 18 E
       let t2 = insert' 22 (insert' 14 (insert' 18 E))
       insert' 12 t2 `shouldBe` T (T (T E 12 E) 14 E) 18 (T E 22 E)
+  describe "complete" $ do
+    it "makes a tree whose depth is n and contains same element" $ do
+      complete 1 3 `shouldBe` T (T (T E 1 E) 1 (T E 1 E)) 1 (T (T E 1 E) 1 (T E 1 E))
