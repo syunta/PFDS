@@ -30,3 +30,9 @@ main = hspec $ do
   describe "complete" $ do
     it "makes a tree whose depth is n and contains same element" $ do
       complete 1 3 `shouldBe` T (T (T E 1 E) 1 (T E 1 E)) 1 (T (T E 1 E) 1 (T E 1 E))
+  describe "create" $ do
+    it "makes an unbalanced tree whose node size is m and contains same element" $ do
+      create 1 1 `shouldBe` T E 1 E
+      create 1 2 `shouldBe` T E 1 (T E 1 E)
+      create 1 3 `shouldBe` T (T E 1 E) 1 (T E 1 E)
+      create 1 4 `shouldBe` T (T E 1 E) 1 (T E 1 (T E 1 E))

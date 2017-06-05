@@ -86,8 +86,20 @@ insert' x s@(T _ y' _) = iter y' s id
 
 -- 2.5
 -- (a)
-
 complete :: (Ord a) => a -> Int -> UnbalancedSet a
 complete _ 0 = E
 complete x n = T t x t
   where t = complete x (n-1)
+
+-- (b)
+create :: (Ord a) => a -> Int -> UnbalancedSet a
+create _ 0 = E
+create x 1 = T E x E
+create x m
+  | m `mod` 2 == 0 = let (t1, t2) = create2 x ((m `div` 2) - 1) in
+                     T t1 x t2
+  | otherwise      = let t = create x (m `div` 2) in
+                     T t x t
+
+create2 :: (Ord a) => a -> Int -> (UnbalancedSet a, UnbalancedSet a)
+create2 x m = (create x m, create x (m+1))
