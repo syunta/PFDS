@@ -1,4 +1,9 @@
+{-# LANGUAGE MultiParamTypeClasses,  FlexibleInstances, InstanceSigs #-}
+
 module Chapter2 where
+
+import FiniteMap
+import Prelude hiding (lookup)
 
 -- 2.1
 
@@ -103,3 +108,19 @@ create x m
 
 create2 :: (Ord a) => a -> Int -> (UnbalancedSet a, UnbalancedSet a)
 create2 x m = (create x m, create x (m+1))
+
+-- 2.6
+
+data UnbalancedMap k v = Empty | M (UnbalancedMap k v) (k, v) (UnbalancedMap k v)
+                         deriving (Show, Eq)
+
+instance Ord k => FiniteMap UnbalancedMap k v where
+
+  empty :: UnbalancedMap k v
+  empty = Empty
+
+  bind :: k -> v -> UnbalancedMap k v -> UnbalancedMap k v
+  bind k v m = m
+
+  lookup :: k -> UnbalancedMap k v -> Maybe v
+  lookup k (M m1 (a,b) m2) = Just b
