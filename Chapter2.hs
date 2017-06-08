@@ -52,9 +52,6 @@ suffixes' (x:xs) = (x:xs) : suffixes' xs
 data UnbalancedSet a = E | T (UnbalancedSet a) a (UnbalancedSet a)
                        deriving (Show, Eq)
 
-empty :: (Ord a) => UnbalancedSet a
-empty = E
-
 -- 2.2
 -- member の結果が False になる場合は d + 1 となるが, True になる場合でも d + 1 なのでケースバイケースと思われる.
 member :: (Ord a) => a -> UnbalancedSet a -> Bool
@@ -120,7 +117,15 @@ instance Ord k => FiniteMap UnbalancedMap k v where
   empty = Empty
 
   bind :: k -> v -> UnbalancedMap k v -> UnbalancedMap k v
-  bind k v m = m
+  bind k v Empty = M Empty (k,v) Empty
+  bind k v (M l (a, b) r)
+    | k < a  = M (bind k v l) (a, b) r
+    | k > a  = M l (a, b) (bind k v r)
+    | k == a = M l (k, v) r
 
   lookup :: k -> UnbalancedMap k v -> Maybe v
-  lookup k (M m1 (a,b) m2) = Just b
+  lookup _ Empty = Nothing
+  lookup k (M l (a, b) r)
+    | k < a  = lookup k l
+    | k > a  = lookup k r
+    | k == a = Just b

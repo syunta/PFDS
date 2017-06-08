@@ -1,5 +1,7 @@
 import Test.Hspec
+import Data.FiniteMap
 import Chapter2
+import Prelude hiding (lookup)
 
 main :: IO ()
 main = hspec $ do
@@ -36,3 +38,8 @@ main = hspec $ do
       create 1 2 `shouldBe` T E 1 (T E 1 E)
       create 1 3 `shouldBe` T (T E 1 E) 1 (T E 1 E)
       create 1 4 `shouldBe` T (T E 1 E) 1 (T E 1 (T E 1 E))
+  describe "UnbalancedMap" $ do
+    it "provides data structure binary tree map" $ do
+      let m = bind 22 7 (bind 14 2 (bind 18 5 Empty))
+      bind 12 3 m `shouldBe` M (M (M Empty (12,3) Empty) (14,2) Empty) (18,5) (M Empty (22,7) Empty)
+      lookup 14 m `shouldBe` Just 2
