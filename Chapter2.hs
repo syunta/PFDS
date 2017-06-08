@@ -2,7 +2,7 @@
 
 module Chapter2 where
 
-import FiniteMap
+import Data.FiniteMap
 import Prelude hiding (lookup)
 
 -- 2.1

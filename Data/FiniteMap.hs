@@ -1,6 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
 
-module FiniteMap where
+module Data.FiniteMap where
 
 import Prelude hiding (lookup)
 
