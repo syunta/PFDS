@@ -37,3 +37,22 @@ map2 f a [x]      = [f a x]
 map2 f a (x:y:xs) = f x y : map2 f a xs
 
 -- log2(n) * log2(n) は常に log2(n) * log2(n) <= n を満たすので、fromList は O(n) 時間しかかからない
+
+-- 3.4
+
+-- (a)
+{-
+       size element
+          7 1
+       /       \
+    3 3          3 2
+  /     \      /     \
+1 4    1 5    1 6    1 7
+
+釣り合った二分木のとき,右スパインが最も長くなる.
+このとき木の高さ(右スパイン)は, log(n + 1)
+
+-}
+
+-- (b)
+-- Data.WeightLeftistHeap
