@@ -1,6 +1,7 @@
 module Chapter3 where
 
 import Data.LeftistHeap
+import qualified Data.WeightLeftistHeap as W
 
 -- 3.1
 {-
@@ -56,3 +57,31 @@ map2 f a (x:y:xs) = f x y : map2 f a xs
 
 -- (b)
 -- Data.WeightLeftistHeap
+
+-- (c)
+merge' :: W.WeightLeftistHeap -> W.WeightLeftistHeap -> W.WeightLeftistHeap
+merge' W.E h = h
+merge' h W.E = h
+merge' h1@(W.T _ x a1 b1) h2@(W.T _ y a2 b2)
+  | x <= y    = let a  = a1
+                    b  = merge' b1 h2
+                    sa = W.size a
+                    sb = W.size b in
+                  if sa >= sb
+                    then W.T (1+(sa)+(sb)) x a b
+                    else W.T (1+(sa)+(sb)) x b a
+  | otherwise = let a  = a2
+                    b  = merge' h1 b2
+                    sa = W.size a
+                    sb = W.size b in
+                  if sa >= sb
+                    then W.T (1+(sa)+(sb)) y a b
+                    else W.T (1+(sa)+(sb)) y b a
+
+-- (d)
+{-
+
+遅延評価時の利点は merge' の再帰処理を待たずに merge' しなかった方の子へのアクセスができるので早くなる?
+(遅延)並列実行時の利点は結果が常に同じになる?
+
+-}
