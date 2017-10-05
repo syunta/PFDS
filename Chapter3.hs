@@ -2,6 +2,7 @@ module Chapter3 where
 
 import Data.LeftistHeap
 import qualified Data.WeightLeftistHeap as W
+import qualified Data.BinomialHeap as B
 
 -- 3.1
 {-
@@ -85,3 +86,10 @@ merge' h1@(W.T _ x a1 b1) h2@(W.T _ y a2 b2)
 (遅延)並列実行時の利点は結果が常に同じになる?
 
 -}
+
+-- 3.5
+findMin' :: B.BinomialHeap -> Int
+findMin' [t]    = B.root t
+findMin' (t:ts) = let r1 = B.root t
+                      r2 = findMin' ts in
+                  if r1 <= r2 then r1 else r2

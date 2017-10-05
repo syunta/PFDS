@@ -1,6 +1,7 @@
 import Test.Hspec
 import Data.LeftistHeap
 import qualified Data.WeightLeftistHeap as W
+import qualified Data.BinomialHeap as B
 import Chapter3
 
 (-:) :: a -> (a -> b) -> b
@@ -19,3 +20,7 @@ main = hspec $ do
     it "merges WeightLeftistHeap" $ do
       merge' (W.insert 7 W.E -: W.insert 2) (W.insert 1 W.E -: W.insert 4) `shouldBe`
         W.merge (W.insert 7 W.E -: W.insert 2) (W.insert 1 W.E -: W.insert 4)
+  describe "findMin'" $ do
+    it "finds smallest root from BinomialHeap" $ do
+      findMin' (B.insert 1 [] -: B.insert 5 -: B.insert 3) `shouldBe`
+        B.findMin (B.insert 1 [] -: B.insert 5 -: B.insert 3)
