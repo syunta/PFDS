@@ -93,3 +93,6 @@ findMin' [t]    = B.root t
 findMin' (t:ts) = let r1 = B.root t
                       r2 = findMin' ts in
                   if r1 <= r2 then r1 else r2
+
+-- 3.6
+-- Data.BinomialHeap'

@@ -43,5 +43,5 @@ findMin :: BinomialHeap -> Int
 findMin ts = let (t, _) = removeMinTree ts in root t
 
 deleteMin :: BinomialHeap -> BinomialHeap
-deleteMin ts = let (N _ x ts1, ts2) = removeMinTree ts in
+deleteMin ts = let (N _ _ ts1, ts2) = removeMinTree ts in
                  merge (reverse ts1) ts2

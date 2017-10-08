@@ -2,6 +2,7 @@ import Test.Hspec
 import Data.LeftistHeap
 import qualified Data.WeightLeftistHeap as W
 import qualified Data.BinomialHeap as B
+import qualified Data.BinomialHeap' as B'
 import Chapter3
 
 (-:) :: a -> (a -> b) -> b
@@ -24,3 +25,10 @@ main = hspec $ do
     it "finds smallest root from BinomialHeap" $ do
       findMin' (B.insert 1 [] -: B.insert 5 -: B.insert 3) `shouldBe`
         B.findMin (B.insert 1 [] -: B.insert 5 -: B.insert 3)
+  describe "BinomialHeap'" $ do
+    it "behaves like BinomialHeap" $ do
+      let t' = B'.insert 1 [] -: B'.insert 5 -: B'.insert 3
+          t  = B.insert 1 [] -: B.insert 5 -: B.insert 3
+      B'.findMin t' `shouldBe` B.findMin t
+      map B'.rank (B'.deleteMin t') `shouldBe` map B.rank (B.deleteMin t)
+      map B'.root (B'.deleteMin t') `shouldBe` map B.root (B.deleteMin t)
