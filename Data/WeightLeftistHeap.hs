@@ -1,30 +1,44 @@
-module Data.WeightLeftistHeap where
+module Data.WeightLeftistHeap(
+  WeightLeftistHeap(..),
+  size, makeT,
+  empty,
+  isEmpty,
+  insert,
+  merge,
+  findMin,
+  deleteMin,
+) where
 
-data WeightLeftistHeap = E | T Int Int WeightLeftistHeap WeightLeftistHeap deriving (Show,Eq)
+import Data.Heap
 
-merge :: WeightLeftistHeap -> WeightLeftistHeap -> WeightLeftistHeap
-merge E h = h
-merge h E = h
-merge h1@(T _ x a1 b1) h2@(T _ y a2 b2)
-  | x <= y    = makeT x a1 (merge b1 h2)
-  | otherwise = makeT y a2 (merge h1 b2)
+data WeightLeftistHeap a = E | T Int a (WeightLeftistHeap a) (WeightLeftistHeap a) deriving (Show,Eq)
 
-size :: WeightLeftistHeap -> Int
+size :: WeightLeftistHeap a -> Int
 size E           = 0
 size (T s _ _ _) = s
 
-makeT :: Int -> WeightLeftistHeap -> WeightLeftistHeap -> WeightLeftistHeap
+makeT :: a -> WeightLeftistHeap a -> WeightLeftistHeap a -> WeightLeftistHeap a
 makeT x a b
   | sa >= sb  = T (1+(sa)+(sb)) x a b
   | otherwise = T (1+(sa)+(sb)) x b a
   where sa = size a
         sb = size b
 
-insert :: Int -> WeightLeftistHeap -> WeightLeftistHeap
-insert x h = merge (T 1 x E E) h
+instance Heap WeightLeftistHeap where
 
-findMin :: WeightLeftistHeap -> Int
-findMin (T _ x _ _) = x
+  empty = E
 
-deleteMin :: WeightLeftistHeap -> WeightLeftistHeap
-deleteMin (T _ _ a b) = merge a b
+  isEmpty E = True
+  isEmpty _ = False
+
+  merge E h = h
+  merge h E = h
+  merge h1@(T _ x a1 b1) h2@(T _ y a2 b2)
+    | x <= y    = makeT x a1 (merge b1 h2)
+    | otherwise = makeT y a2 (merge h1 b2)
+
+  insert x h = merge (T 1 x E E) h
+
+  findMin (T _ x _ _) = x
+
+  deleteMin (T _ _ a b) = merge a b

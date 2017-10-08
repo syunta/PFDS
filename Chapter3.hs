@@ -1,5 +1,6 @@
 module Chapter3 where
 
+import Data.Heap
 import Data.LeftistHeap
 import qualified Data.WeightLeftistHeap as W
 import qualified Data.BinomialHeap as B
@@ -19,17 +20,17 @@ import qualified Data.BinomialHeap as B
 -}
 
 -- 3.2
-insert' :: Int -> LeftistHeap -> LeftistHeap
+insert' :: (Ord a, Show a) => a -> LeftistHeap a -> LeftistHeap a
 insert' x E = T 1 x E E
 insert' x h@(T _ y a b)
   | x <= y    = makeT x E h
   | otherwise = makeT y a (insert' x b)
 
 -- 3.3
-fromList :: [Int] -> LeftistHeap
+fromList :: Ord a => [a] -> LeftistHeap a
 fromList xs = fromList' $ map (\x -> insert x E) xs
 
-fromList' :: [LeftistHeap] -> LeftistHeap
+fromList' :: Ord a => [LeftistHeap a] -> LeftistHeap a
 fromList' [x] = x
 fromList' xs = fromList' $ map2 merge E xs
 
@@ -60,7 +61,7 @@ map2 f a (x:y:xs) = f x y : map2 f a xs
 -- Data.WeightLeftistHeap
 
 -- (c)
-merge' :: W.WeightLeftistHeap -> W.WeightLeftistHeap -> W.WeightLeftistHeap
+merge' :: Ord a => W.WeightLeftistHeap a -> W.WeightLeftistHeap a -> W.WeightLeftistHeap a
 merge' W.E h = h
 merge' h W.E = h
 merge' h1@(W.T _ x a1 b1) h2@(W.T _ y a2 b2)
@@ -88,11 +89,11 @@ merge' h1@(W.T _ x a1 b1) h2@(W.T _ y a2 b2)
 -}
 
 -- 3.5
-findMin' :: B.BinomialHeap -> Int
-findMin' [t]    = B.root t
-findMin' (t:ts) = let r1 = B.root t
-                      r2 = findMin' ts in
-                  if r1 <= r2 then r1 else r2
+findMin' :: Ord a => B.BinomialHeap a -> a
+findMin' (B.BH [t])    = B.root t
+findMin' (B.BH (t:ts)) = let r1 = B.root t
+                             r2 = findMin' (B.BH ts) in
+                         if r1 <= r2 then r1 else r2
 
 -- 3.6
 -- Data.BinomialHeap'
