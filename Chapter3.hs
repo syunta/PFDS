@@ -97,3 +97,6 @@ findMin' (B.BH (t:ts)) = let r1 = B.root t
 
 -- 3.6
 -- Data.BinomialHeap'
+
+-- 3.7
+-- Data.ExplicitMinHeap
