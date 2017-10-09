@@ -5,6 +5,7 @@ import qualified Data.WeightLeftistHeap as W
 import qualified Data.BinomialHeap as B
 import qualified Data.BinomialHeap' as B'
 import qualified Data.ExplicitMinHeap as E
+import qualified Data.RedBlackSet as R
 import Chapter3
 
 (-:) :: a -> (a -> b) -> b
@@ -41,3 +42,7 @@ main = hspec $ do
           eb = E.insert 1 (E.NE 2 b) :: E.ExplicitMinHeap B.BinomialHeap Int
           el = E.insert 1 (E.NE 2 l) :: E.ExplicitMinHeap LeftistHeap Int
       E.findMin eb `shouldBe` E.findMin el
+  describe "fromOrdList" $ do
+    it "generates RedBlackSet from ordered list" $ do
+      fromOrdList [1,2,3,4,5] `shouldBe`
+        R.T R.B (R.T R.R (R.T R.B R.E 1 R.E) 2 R.E) 3 (R.T R.R (R.T R.B R.E 4 R.E) 5 R.E)

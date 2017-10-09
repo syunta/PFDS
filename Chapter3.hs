@@ -4,6 +4,7 @@ import Data.Heap
 import Data.LeftistHeap
 import qualified Data.WeightLeftistHeap as W
 import qualified Data.BinomialHeap as B
+import qualified Data.RedBlackSet as R
 
 -- 3.1
 {-
@@ -107,3 +108,24 @@ findMin' (B.BH (t:ts)) = let r1 = B.root t
 最短の経路が黒のみのノードであることに対し、同数の黒ノードが赤ノードと交互に並ぶのが最長の経路になる2進木なので、せいぜい 2log n
 
 -}
+
+-- 3.9
+{-
+fromOrdList xs = foldl (flip insert) empty xs
+のように実装すると O(nlogn) になってしまう
+-}
+fromOrdList :: Ord a => [a] -> R.RedBlackSet a
+fromOrdList xs = fromOrdList' (length xs) R.B  xs
+
+fromOrdList' :: Ord a => Int -> R.Color -> [a] -> R.RedBlackSet a
+fromOrdList' _ _ []    = R.empty
+fromOrdList' _ R.B [x] = R.T R.B R.empty x R.empty
+fromOrdList' _ R.R [x] = R.T R.R R.empty x R.empty
+fromOrdList' n R.B xs  = R.T R.B l (xs !! m) r
+                         where m = n `div` 2
+                               l = fromOrdList' m R.R $ take m xs
+                               r = fromOrdList' (m+1) R.R $ drop (m+1) xs
+fromOrdList' n R.R xs  = R.T R.R l (xs !! m) r
+                         where m = n `div` 2
+                               l = fromOrdList' m R.B $ take m xs
+                               r = fromOrdList' (m+1) R.B $ drop (m+1) xs
