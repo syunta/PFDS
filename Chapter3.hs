@@ -149,3 +149,33 @@ insert'' x s = let (R.T _ a y b) = ins s in R.T R.B a y b
                        | x < y     = lbalance c (ins a) y b
                        | x > y     = rbalance c a y (ins b)
                        | otherwise = s'
+-- (b)
+insert''' :: (Ord a) => a ->  R.RedBlackSet a ->  R.RedBlackSet a
+insert''' x s = let (R.T _ a y b) = ins s in R.T R.B a y b
+                where ins R.E = R.T R.R R.E x R.E
+                      ins s'@(R.T c a y b)
+                        | x < y     = case a of
+                                        R.E -> R.T c (ins a) y b
+                                        R.T _ _ z _ | x < z -> llbalance c (ins a) y b
+                                                    | x > z -> lrbalance c (ins a) y b
+                        | x > y     = case b of
+                                        R.E -> R.T c a y (ins b)
+                                        R.T _ _ z _ | x < z -> rlbalance c a y (ins b)
+                                                    | x > z -> rrbalance c a y (ins b)
+                        | otherwise = s'
+
+llbalance :: R.Color -> R.RedBlackSet a -> a -> R.RedBlackSet a -> R.RedBlackSet a
+llbalance R.B (R.T R.R (R.T R.R a x b) y c) z d = R.T R.R (R.T R.B a x b) y (R.T R.B c z d)
+llbalance c a x b = R.T c a x b
+
+lrbalance :: R.Color -> R.RedBlackSet a -> a -> R.RedBlackSet a -> R.RedBlackSet a
+lrbalance R.B (R.T R.R a x (R.T R.R b y c)) z d = R.T R.R (R.T R.B a x b) y (R.T R.B c z d)
+lrbalance c a x b = R.T c a x b
+
+rlbalance :: R.Color -> R.RedBlackSet a -> a -> R.RedBlackSet a -> R.RedBlackSet a
+rlbalance R.B a x (R.T R.R (R.T R.R b y c) z d) = R.T R.R (R.T R.B a x b) y (R.T R.B c z d)
+rlbalance c a x b = R.T c a x b
+
+rrbalance :: R.Color -> R.RedBlackSet a -> a -> R.RedBlackSet a -> R.RedBlackSet a
+rrbalance R.B a x (R.T R.R b y (R.T R.R c z d)) = R.T R.R (R.T R.B a x b) y (R.T R.B c z d)
+rrbalance c a x b = R.T c a x b

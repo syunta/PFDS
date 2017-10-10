@@ -50,3 +50,7 @@ main = hspec $ do
     it "behaves like RedBlackSet.insert" $ do
       foldl (flip insert'') R.empty [4,5,7,8,1,3,9] `shouldBe`
         foldl (flip R.insert) R.empty [4,5,7,8,1,3,9]
+  describe "insert'''" $ do
+    it "behaves like RedBlackSet.insert" $ do
+      foldl (flip insert''') R.empty [4,5,7,8,1,3,9] `shouldBe`
+        foldl (flip R.insert) R.empty [4,5,7,8,1,3,9]
