@@ -46,3 +46,7 @@ main = hspec $ do
     it "generates RedBlackSet from ordered list" $ do
       fromOrdList [1,2,3,4,5] `shouldBe`
         R.T R.B (R.T R.R (R.T R.B R.E 1 R.E) 2 R.E) 3 (R.T R.R (R.T R.B R.E 4 R.E) 5 R.E)
+  describe "insert''" $ do
+    it "behaves like RedBlackSet.insert" $ do
+      foldl (flip insert'') R.empty [4,5,7,8,1,3,9] `shouldBe`
+        foldl (flip R.insert) R.empty [4,5,7,8,1,3,9]

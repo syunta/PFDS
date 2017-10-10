@@ -129,3 +129,23 @@ fromOrdList' n R.R xs  = R.T R.R l (xs !! m) r
                          where m = n `div` 2
                                l = fromOrdList' m R.B $ take m xs
                                r = fromOrdList' (m+1) R.B $ drop (m+1) xs
+
+-- 3.10
+-- (a)
+lbalance :: R.Color -> R.RedBlackSet a -> a -> R.RedBlackSet a -> R.RedBlackSet a
+lbalance R.B (R.T R.R (R.T R.R a x b) y c) z d = R.T R.R (R.T R.B a x b) y (R.T R.B c z d)
+lbalance R.B (R.T R.R a x (R.T R.R b y c)) z d = R.T R.R (R.T R.B a x b) y (R.T R.B c z d)
+lbalance c a x b = R.T c a x b
+
+rbalance :: R.Color -> R.RedBlackSet a -> a -> R.RedBlackSet a -> R.RedBlackSet a
+rbalance R.B a x (R.T R.R (R.T R.R b y c) z d) = R.T R.R (R.T R.B a x b) y (R.T R.B c z d)
+rbalance R.B a x (R.T R.R b y (R.T R.R c z d)) = R.T R.R (R.T R.B a x b) y (R.T R.B c z d)
+rbalance c a x b = R.T c a x b
+
+insert'' :: (Ord a) => a ->  R.RedBlackSet a ->  R.RedBlackSet a
+insert'' x s = let (R.T _ a y b) = ins s in R.T R.B a y b
+               where ins R.E = R.T R.R R.E x R.E
+                     ins s'@(R.T c a y b)
+                       | x < y     = lbalance c (ins a) y b
+                       | x > y     = rbalance c a y (ins b)
+                       | otherwise = s'
