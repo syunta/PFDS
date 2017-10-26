@@ -2,15 +2,15 @@ module Chapter4 where
 
 -- 4.2
 
-insertion_sort :: Ord a => [a] -> [a]
-insertion_sort xs = insertion_sort' xs []
+insertionSort :: Ord a => [a] -> [a]
+insertionSort xs = insertionSort' xs []
 
-insertion_sort' :: Ord a => [a] -> [a] -> [a]
-insertion_sort' []     ys = ys
-insertion_sort' (x:xs) ys = insertion_sort' xs $ insert_element x ys
+insertionSort' :: Ord a => [a] -> [a] -> [a]
+insertionSort' []     ys = ys
+insertionSort' (x:xs) ys = insertionSort' xs $ insertElement x ys
 
-insert_element :: Ord a => a -> [a] -> [a]
-insert_element a [] = [a]
-insert_element a s@(x:xs)
-  | a > x     = x : insert_element a xs
+insertElement :: Ord a => a -> [a] -> [a]
+insertElement a [] = [a]
+insertElement a s@(x:xs)
+  | a > x     = x : insertElement a xs
   | otherwise = a : s
