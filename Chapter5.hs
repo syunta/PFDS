@@ -1,5 +1,5 @@
 module Chapter5 where
-import qualified Data.BatchedDeque as D
+import Data.SplayHeap
 
 -- 5.1
 -- (a)
@@ -68,3 +68,25 @@ mergeの後のポテンシャルは t + s から k (繰り上がりの回数)を
 最終的な償却コストは k + logn -k = logn
 
 -}
+
+-- 5.4
+
+bigger :: Ord a => a -> SplayHeap a -> SplayHeap a
+bigger _ E = E
+bigger pivot (T a x b) =
+  if x <= pivot then bigger pivot b
+  else case a of
+    E -> T E x b
+    T a1 y a2 ->
+      if y <= pivot then T (bigger pivot a2) x b
+      else T (bigger pivot a1) y (T a2 x b)
+
+smaller :: Ord a => a -> SplayHeap a -> SplayHeap a
+smaller _ E = E
+smaller pivot (T a x b) =
+  if pivot <= x then smaller pivot a
+  else case b of
+    E -> T a x E
+    T a1 y a2 ->
+      if pivot <= y then T a x (smaller pivot a1)
+      else T (T a1 x a) y (smaller pivot a2)

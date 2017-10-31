@@ -1,6 +1,7 @@
 import Test.Hspec
 import Chapter5
 import qualified Data.BatchedDeque as D
+import qualified Data.SplayHeap as S
 
 main :: IO ()
 main = hspec $ do
@@ -31,3 +32,9 @@ main = hspec $ do
         D.init (D.Q [1,2] [4,3]) `shouldBe` D.Q [1,2] [3]
         D.init (D.Q [] [4,3,2,1]) `shouldBe` D.Q [1,2] [3]
         D.init (D.Q [1,2,3,4] []) `shouldBe` D.Q [1,2] [3]
+  describe "SplayHeap" $ do
+    describe "smaller" $ do
+      it "returns balanced SplayHeap contains elements smaller than pivot" $ do
+        smaller 10 (S.T S.E 1 (S.T S.E 2 (S.T S.E 3 (S.T S.E 4 S.E)))) `shouldBe`
+          S.T (S.T S.E 1 S.E) 2 (S.T (S.T S.E 3 S.E) 4 S.E)
+        smaller 10 (S.T S.E 10 S.E) `shouldBe` S.E
